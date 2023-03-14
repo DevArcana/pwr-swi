@@ -1,3 +1,11 @@
+# Temporary files and data
+datasets
+typesense-data
+tmp
+
+# All JetBrains stuff
+.idea
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
