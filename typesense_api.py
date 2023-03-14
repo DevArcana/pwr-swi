@@ -12,8 +12,10 @@ typesense_client = typesense.Client({
     'connection_timeout_seconds': 2
 })
 
-chess_schema = {
-    'name': 'chess',
+collection_name = 'chess'
+
+schema = {
+    'name': collection_name,
     'fields': [
         {'name': 'timestamp_utc', 'type': 'int32'},  # [UTCDate "2012.12.31"] [UTCTime "23:04:12"]
         {'name': 'event', 'type': 'string'},  # [Event "Rated Classical game"]
@@ -28,13 +30,12 @@ chess_schema = {
 
 
 def ensure_chess_collection_exists():
-    name = chess_schema['name']
     names = [x['name'] for x in typesense_client.collections.retrieve()]
 
-    if name in names:
-        typesense_client.collections[name].delete()
+    if collection_name in names:
+        typesense_client.collections[collection_name].delete()
 
-    typesense_client.collections.create(chess_schema)
+    typesense_client.collections.create(schema)
 
 
 def fill_chess_collection():
@@ -61,6 +62,10 @@ def fill_chess_collection():
                 'mainline_moves': str(game.mainline_moves()),
             }
 
-            collection = typesense_client.collections[chess_schema['name']]
+            collection = typesense_client.collections[collection_name]
             collection.documents.upsert(ts_game)
             print(f'Upsert game #{counter} {ts_game["id"]}')
+
+
+def get_collection():
+    return typesense_client.collections[collection_name]
