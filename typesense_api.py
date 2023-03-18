@@ -1,3 +1,5 @@
+import os
+
 import typesense
 import chess.pgn
 from datetime import datetime
@@ -25,6 +27,7 @@ schema = {
         {'name': 'opening', 'type': 'string'},  # [Opening "French Defense: Normal Variation"]
         {'name': 'termination', 'type': 'string'},  # [Termination "Normal"]
         {'name': 'mainline_moves', 'type': 'string'},  # 1. e4 e6 2. d4 b6 3. a3 Bb7 4. Nc3 Nh6 5. Bxh6 gxh6 6. Be2...
+        # {'name': 'sequenced_moves', 'type': 'string'},  # e4 e6 d4 b6 a3 Bb7 Nc3 Nh6 Bxh6 gxh6 Be2...
     ],
     'default_sorting_field': 'timestamp_utc'
 }
@@ -39,7 +42,12 @@ def ensure_chess_collection_exists():
     typesense_client.collections.create(schema)
 
 
-def fill_chess_collection():
+def load_all_datasets():
+    for file in os.listdir('datasets'):
+        fill_chess_collection(f'datasets/{file}')
+
+def fill_chess_collection(path):
+    print(f'loading dataset: {path}')
     with open('datasets/lichess_db_standard_rated_2013-01.pgn') as file:
         counter = 0
         while True:
@@ -47,11 +55,12 @@ def fill_chess_collection():
             if game is None:
                 break
             counter = counter + 1
-            if counter > 100:
-                break
+            # if counter > 100:
+            #     break
 
             date = game.headers.get('UTCDate')  # 2012.12.31
             time = game.headers.get('UTCTime')  # 23:04:12
+
             ts_game = {
                 'id': game.headers.get('Site').split('/')[-1],  # [Site "https://lichess.org/j1dkb5dw"]
                 'link': game.headers.get('Site'),

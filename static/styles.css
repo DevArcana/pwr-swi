@@ -2,6 +2,7 @@
     --color-chessboard-dark: #BF8753;
     --color-chessboard-light: #FEC188;
     --color-chessboard-light-darker: #cd9b6e;
+    --color-text: #222222;
 }
 
 html, body {

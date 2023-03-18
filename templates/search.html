@@ -29,10 +29,19 @@
 </header>
 
 <main>
-    <small>Found {{results.total_count}} results in {{"%.02f" | format(results.duration)}}s</small>
-    <ul>
-        {% for item in results.results %}
-            <li> {{item}} </li>
+    <small>Found {{results.total_count}} results in {{results.duration}}ms</small>
+    <ul class="search-results">
+        {% for hit in results.hits %}
+            <li>
+                <a class="search-header" href="{{hit['document']['link']}}">
+                    <h4>{{hit['document']['event']}}</h4>
+                    <h6>{{hit['document']['white']}} (white) vs {{hit['document']['black']}} (black)</h6>
+                </a>
+                <small class="search-highlight">{{hit['highlights'][0]['snippet'] | safe }}</small>
+                <div class="board">
+                    {{hit['board_svg'] | safe}}
+                </div>
+            </li>
         {% endfor %}
     </ul>
 </main>

@@ -52,6 +52,34 @@ main {
     background-color: var(--color-chessboard-light-darker);
 }
 
+.search-results > li {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-text);
+}
+
+.search-header {
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.search-header > h4 {
+    margin: 0;
+}
+
+.search-header > h6 {
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.search-highlight {
+    font-size: 0.7em;
+}
+
+.board {
+    width: 12rem;
+}
+
 footer {
     grid-row-start: 3;
     display: flex;
