@@ -17,6 +17,7 @@ collection_name = 'chess'
 schema = {
     'name': collection_name,
     'fields': [
+        {'name': 'link', 'type': 'string'},  # [Site "https://lichess.org/j1dkb5dw"]
         {'name': 'timestamp_utc', 'type': 'int32'},  # [UTCDate "2012.12.31"] [UTCTime "23:04:12"]
         {'name': 'event', 'type': 'string'},  # [Event "Rated Classical game"]
         {'name': 'white', 'type': 'string'},  # [White "BFG9k"]
@@ -52,7 +53,8 @@ def fill_chess_collection():
             date = game.headers.get('UTCDate')  # 2012.12.31
             time = game.headers.get('UTCTime')  # 23:04:12
             ts_game = {
-                'id': game.headers.get('Site'),  # [Site "https://lichess.org/j1dkb5dw"]
+                'id': game.headers.get('Site').split('/')[-1],  # [Site "https://lichess.org/j1dkb5dw"]
+                'link': game.headers.get('Site'),
                 'timestamp_utc': int(datetime.strptime(f'{date} {time}', '%Y.%m.%d %H:%M:%S').timestamp()),
                 'event': game.headers.get('Event'),
                 'white': game.headers.get('White'),

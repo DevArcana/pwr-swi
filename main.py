@@ -1,17 +1,8 @@
-import typesense_api
-from flask import Flask, request
-
-if __name__ == '__main__':
-    typesense_api.ensure_chess_collection_exists()
-    typesense_api.fill_chess_collection()
-    exit(0)
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def hello_world():
-    q = request.args.get('q')
-    if q is None:
-        return f'<p>{q}</p>'
-    return f'<p>nothing</p>'
+    return render_template('welcome.html')
