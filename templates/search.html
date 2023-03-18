@@ -29,7 +29,7 @@
 </header>
 
 <main>
-    <small>Found {{results.total_count}} results in {{results.duration}}ms</small>
+    <small>Found {{results.total_count}} results in {{results.duration}}ms [out of {{results.out_of}}]</small>
     <ul class="search-results">
         {% for hit in results.hits %}
             <li>

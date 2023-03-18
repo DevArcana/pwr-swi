@@ -53,6 +53,6 @@ def search():
         board = game.end().board()
         hit['board_svg'] = chess.svg.board(board)
 
-    results = {'total_count': result['found'], 'duration': result['search_time_ms'], 'hits': hits}
+    results = {'total_count': result['found'], 'duration': result['search_time_ms'], 'out_of': result['out_of'], 'hits': hits}
 
     return render_template('search.html', form=form, results=results)
