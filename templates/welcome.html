@@ -14,7 +14,8 @@
 <body>
 
 <main>
-    <form class="search-form" action="">
+    <form class="search-form" method="POST" action="/">
+        {{ form.csrf_token }}
         <div class="logo">
             <h2 class="sentence">Search for
                 <div class="slidingVertical">
@@ -30,7 +31,7 @@
                       style="opacity:1; fill:#000000; fill-opacity:1; fill-rule:nonzero; stroke:#000000; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:miter; stroke-miterlimit:4; stroke-dasharray:none; stroke-opacity:1;"/>
             </svg>
         </div>
-        <input id="search_string" name="search_string" class="search-bar" placeholder="e4 c5..."/>
+        <input id="query" name="query" class="search-bar" placeholder="e4 c5..."/>
         <button type="submit" class="search-button">Search</button>
     </form>
 </main>

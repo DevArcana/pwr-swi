@@ -1,0 +1,60 @@
+body {
+    display: grid;
+    grid-template-rows: 2fr 9fr 1fr;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 2fr 10fr;
+}
+
+main {
+    grid-row-start: 2;
+    padding: 0rem 3rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: #222222;
+}
+
+.search-bar {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    width: 100%;
+    background-color: var(--color-chessboard-light);
+}
+
+.search-button {
+    width: 8rem;
+    padding: 0.5rem;
+    margin: 1rem;
+    outline: none;
+    border: none;
+    background-color: var(--color-chessboard-light);
+}
+
+.search-button:hover {
+    background-color: var(--color-chessboard-light-darker);
+}
+
+footer {
+    grid-row-start: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
