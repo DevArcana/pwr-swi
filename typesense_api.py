@@ -46,9 +46,10 @@ def load_all_datasets():
     for file in os.listdir('datasets'):
         fill_chess_collection(f'datasets/{file}')
 
+
 def fill_chess_collection(path):
     print(f'loading dataset: {path}')
-    with open('datasets/lichess_db_standard_rated_2013-01.pgn') as file:
+    with open(path) as file:
         counter = 0
         while True:
             game = chess.pgn.read_game(file)
