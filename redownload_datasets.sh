@@ -10,4 +10,4 @@ for i in $(seq -w 1 12); do
   rm lichess_db_standard_rated_2013-"$i".pgn.zst
 done
 
-date >downloaded_at.txt
+date > downloaded_at.txt
