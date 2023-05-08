@@ -8,3 +8,11 @@ services:
     volumes:
       - ./typesense-data:/data
     command: '--data-dir /data --api-key=xyz --enable-cors'
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - "xpack.security.enabled=false"
+      - "discovery.type=single-node"
+      - "http.max_content_length=1gb"
+    ports:
+      - "9200:9200"
