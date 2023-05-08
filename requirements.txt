@@ -105,4 +105,4 @@ websocket-client==1.5.1
 Werkzeug==2.2.3
 widgetsnbextension==4.0.7
 WTForms==3.0.1
-pysolr==3.9.0
+elasticsearch==8.7.0
