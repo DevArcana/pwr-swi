@@ -3,7 +3,7 @@ import Search from "../components/Search.tsx";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const HomePage = () => {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
 
@@ -26,4 +26,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default HomePage;

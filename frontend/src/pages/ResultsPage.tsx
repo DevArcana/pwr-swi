@@ -5,7 +5,7 @@ import { useState } from "react";
 import SearchResult from "../components/SearchResult.tsx";
 import ChessGame from "../models/ChessGame.ts";
 
-const Results = () => {
+const ResultsPage = () => {
     const [params, setParams] = useSearchParams();
     const [query, setQuery] = useState(params.get("q") || "");
     const [games] = useState<ChessGame[]>([{ id: 1 }, { id: 2 }, { id: 3 }]);
@@ -32,4 +32,4 @@ const Results = () => {
     );
 };
 
-export default Results;
+export default ResultsPage;

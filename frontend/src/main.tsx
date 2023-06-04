@@ -2,17 +2,17 @@ import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./pages/Home.tsx";
-import Results from "./pages/Results.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import ResultsPage from "./pages/ResultsPage.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />,
+        element: <HomePage />,
     },
     {
         path: "/search",
-        element: <Results />,
+        element: <ResultsPage />,
     },
 ]);
 
