@@ -1,11 +1,14 @@
-import chessPiece from "./assets/chess_piece.svg";
-import Search from "./components/Search.tsx";
+import chessPiece from "../assets/chess_piece.svg";
+import Search from "../components/Search.tsx";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const App = () => {
+const Home = () => {
     const [query, setQuery] = useState("");
+    const navigate = useNavigate();
+
     const onSearch = (q: string) => {
-        console.log(q);
+        navigate(`search?q=${q}`);
     };
 
     return (
@@ -23,4 +26,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default Home;
