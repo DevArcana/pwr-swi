@@ -5,3 +5,5 @@ tmp
 
 # All JetBrains stuff
 .idea
+
+.DS_Store
