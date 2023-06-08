@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  typesense:
+    image: typesense/typesense:0.24.0
+    restart: on-failure
+    ports:
+      - "8108:8108"
+    volumes:
+      - ./typesense-data:/data
+    command: '--data-dir /data --api-key=xyz --enable-cors'
+  backend:
+    image: swi-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Europe/Warsaw
+  frontend:
+    image: swi-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Europe/Warsaw
+    ports:
+      - "80:80"
+    
+    
