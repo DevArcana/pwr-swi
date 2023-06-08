@@ -1,4 +1,6 @@
 import React from "react";
+import { MagnifyingGlassIcon, TransparencyGridIcon } from "@radix-ui/react-icons";
+import * as Dialog from "@radix-ui/react-dialog";
 
 interface Props {
     query: string;
@@ -9,35 +11,38 @@ interface Props {
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
     return (
         <form
-            className="relative w-96"
+            className="relative w-96 bg-white rounded p-2 flex items-center"
             onSubmit={(event) => {
                 event.preventDefault();
                 onSearch(query);
             }}
         >
-            <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+            <span className="absolute flex justify-center items-center">
                 <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
-                    <svg
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        className="w-6 h-6"
-                    >
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                    <MagnifyingGlassIcon className="text-gray-500" />
                 </button>
             </span>
             <input
                 type="search"
-                className="py-2 text-sm rounded-md pl-10 focus:outline-none w-full"
+                className="text-sm pl-7 focus:outline-none w-full"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="e4 e5"
                 autoComplete="off"
             />
+            <Dialog.Root>
+                <Dialog.Trigger asChild>
+                    <button className="flex justify-center items-center p-1 hover:text-gray-700">
+                        <TransparencyGridIcon />
+                    </button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                    <Dialog.Overlay className="bg-black opacity-30 fixed inset-0" />
+                    <Dialog.Content className="bg-white rounded p-3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+                        <div>this is a modal</div>
+                    </Dialog.Content>
+                </Dialog.Portal>
+            </Dialog.Root>
         </form>
     );
 };
