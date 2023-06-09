@@ -1,7 +1,7 @@
-import ChessGame from "../models/ChessGame.ts";
+import ChessGameResponse from "../models/ChessGameResponse.ts";
 
 interface Props {
-    game: ChessGame;
+    game: ChessGameResponse;
 }
 
 const SearchResult: React.FC<Props> = ({ game }) => {

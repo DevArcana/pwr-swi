@@ -3,12 +3,12 @@ import Search from "../components/Search.tsx";
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import SearchResult from "../components/SearchResult.tsx";
-import ChessGame from "../models/ChessGame.ts";
+import ChessGameResponse from "../models/ChessGameResponse.ts";
 
 const ResultsPage = () => {
     const [params, setParams] = useSearchParams();
     const [query, setQuery] = useState(params.get("q") || "");
-    const [games] = useState<ChessGame[]>([{ id: 1 }, { id: 2 }, { id: 3 }]);
+    const [games] = useState<ChessGameResponse[]>([{ id: 1 }, { id: 2 }, { id: 3 }]);
     const onSearch = (q: string) => {
         setParams({ q });
     };

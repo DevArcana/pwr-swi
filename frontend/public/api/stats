@@ -1,0 +1,37 @@
+{
+  "overall": {
+    "white_win": 0.4,
+    "black_win": 0.3,
+    "draw": 0.3
+  },
+  "moves": [
+    {
+      "move": "Nf3",
+      "popularity": 0.5,
+      "white_win": 0.4,
+      "black_win": 0.2,
+      "draw": 0.4
+    },
+    {
+      "move": "Nc3",
+      "popularity": 0.3,
+      "white_win": 0.4,
+      "black_win": 0.4,
+      "draw": 0.2
+    },
+    {
+      "move": "Bc4",
+      "popularity": 0.15,
+      "white_win": 0.3,
+      "black_win": 0.4,
+      "draw": 0.3
+    },
+    {
+      "move": "d4",
+      "popularity": 0.05,
+      "white_win": 0.5,
+      "black_win": 0.4,
+      "draw": 0.1
+    }
+  ]
+}
