@@ -1,6 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MagnifyingGlassIcon, TransparencyGridIcon } from "@radix-ui/react-icons";
 import * as Dialog from "@radix-ui/react-dialog";
+import "chessboard-element";
+
+/*
+ADAPTED FROM https://stackblitz.com/edit/react-chess-board?file=index.js
+ */
+
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace JSX {
+        interface IntrinsicElements {
+            "chess-board": any;
+        }
+    }
+}
+
+interface Board {
+    clear: () => void;
+    start: () => void;
+}
 
 interface Props {
     query: string;
@@ -9,6 +28,16 @@ interface Props {
 }
 
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
+    const [board, setBoard] = useState<Board | null>(null);
+
+    // you can remove this, it's only to show available methods
+    useEffect(() => {
+        if (board) {
+            board.clear();
+            board.start();
+        }
+    }, [board]);
+
     return (
         <form
             className="relative w-96 bg-white rounded p-2 flex items-center"
@@ -39,7 +68,14 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                 <Dialog.Portal>
                     <Dialog.Overlay className="bg-black opacity-30 fixed inset-0" />
                     <Dialog.Content className="bg-white rounded p-3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-                        <div>this is a modal</div>
+                        <div>
+                            <chess-board
+                                ref={(e: Board) => setBoard(e)}
+                                position="start"
+                                draggable-pieces
+                                spare-pieces
+                            ></chess-board>
+                        </div>
                     </Dialog.Content>
                 </Dialog.Portal>
             </Dialog.Root>
