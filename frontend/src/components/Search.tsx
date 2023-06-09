@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MagnifyingGlassIcon, TransparencyGridIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon, Squares2X2Icon } from "@heroicons/react/24/solid";
 import * as Dialog from "@radix-ui/react-dialog";
 import "chessboard-element";
 
@@ -48,7 +48,7 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
         >
             <span className="absolute flex justify-center items-center">
                 <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
-                    <MagnifyingGlassIcon className="text-gray-500" />
+                    <MagnifyingGlassIcon width={16} />
                 </button>
             </span>
             <input
@@ -62,7 +62,7 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
             <Dialog.Root>
                 <Dialog.Trigger asChild>
                     <button className="flex justify-center items-center p-1 hover:text-gray-700">
-                        <TransparencyGridIcon />
+                        <Squares2X2Icon width={16} />
                     </button>
                 </Dialog.Trigger>
                 <Dialog.Portal>
