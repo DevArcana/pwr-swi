@@ -1,16 +1,25 @@
 import chessPiece from "../assets/chess_piece.svg";
 import Search from "../components/Search.tsx";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchResult from "../components/SearchResult.tsx";
-import ChessGameResponse from "../models/ChessGameResponse.ts";
+import useGamesApi from "../hooks/useGamesApi.ts";
 
 const ResultsPage = () => {
     const [params, setParams] = useSearchParams();
     const [query, setQuery] = useState(params.get("q") || "");
-    const [games] = useState<ChessGameResponse[]>([{ id: 1 }, { id: 2 }, { id: 3 }]);
+
+    const { results, stats, search } = useGamesApi();
+
+    useEffect(() => {
+        search(query);
+        // run only once
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const onSearch = (q: string) => {
         setParams({ q });
+        search(q);
     };
 
     return (
@@ -22,11 +31,9 @@ const ResultsPage = () => {
                     <Search query={query} setQuery={setQuery} onSearch={onSearch} />
                 </header>
                 <main className="bg-red-400 flex flex-col gap-3 p-3">
-                    {games.map((game) => (
-                        <SearchResult game={game} />
-                    ))}
+                    {results && results.hits.map((game) => <SearchResult key={game.link} game={game} />)}
                 </main>
-                <aside className="">Side results go here</aside>
+                <aside className="">{JSON.stringify(stats)}</aside>
             </div>
         </>
     );
