@@ -1,25 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { MagnifyingGlassIcon, Squares2X2Icon } from "@heroicons/react/24/solid";
-import * as Dialog from "@radix-ui/react-dialog";
-import "chessboard-element";
-
-/*
-ADAPTED FROM https://stackblitz.com/edit/react-chess-board?file=index.js
- */
-
-declare global {
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace JSX {
-        interface IntrinsicElements {
-            "chess-board": any;
-        }
-    }
-}
-
-interface Board {
-    clear: () => void;
-    start: () => void;
-}
+import React from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import SearchBoard from "./SearchBoard.tsx";
 
 interface Props {
     query: string;
@@ -28,16 +9,6 @@ interface Props {
 }
 
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
-    const [board, setBoard] = useState<Board | null>(null);
-
-    // you can remove this, it's only to show available methods
-    useEffect(() => {
-        if (board) {
-            board.clear();
-            board.start();
-        }
-    }, [board]);
-
     return (
         <form
             className="relative w-96 bg-white rounded p-2 flex items-center"
@@ -59,26 +30,22 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                 placeholder="e4 e5"
                 autoComplete="off"
             />
-            <Dialog.Root>
-                <Dialog.Trigger asChild>
-                    <button className="flex justify-center items-center p-1 hover:text-gray-700">
-                        <Squares2X2Icon width={16} />
-                    </button>
-                </Dialog.Trigger>
-                <Dialog.Portal>
-                    <Dialog.Overlay className="bg-black opacity-30 fixed inset-0" />
-                    <Dialog.Content className="bg-white rounded p-3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-                        <div>
-                            <chess-board
-                                ref={(e: Board) => setBoard(e)}
-                                position="start"
-                                draggable-pieces
-                                spare-pieces
-                            ></chess-board>
-                        </div>
-                    </Dialog.Content>
-                </Dialog.Portal>
-            </Dialog.Root>
+            <SearchBoard />
+            {/*<Dialog.Root>*/}
+            {/*    <Dialog.Trigger asChild>*/}
+            {/*        <button className="flex justify-center items-center p-1 hover:text-gray-700">*/}
+            {/*            <Squares2X2Icon width={16} />*/}
+            {/*        </button>*/}
+            {/*    </Dialog.Trigger>*/}
+            {/*    <Dialog.Portal>*/}
+            {/*        <Dialog.Overlay className="bg-black opacity-30 fixed inset-0" />*/}
+            {/*        <Dialog.Content className="bg-white rounded p-3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">*/}
+            {/*            <div>*/}
+
+            {/*            </div>*/}
+            {/*        </Dialog.Content>*/}
+            {/*    </Dialog.Portal>*/}
+            {/*</Dialog.Root>*/}
         </form>
     );
 };
