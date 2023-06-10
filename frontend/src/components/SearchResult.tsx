@@ -1,7 +1,12 @@
 import ChessGameResponse from "../models/ChessGameResponse.ts";
 import { useRef, useState } from "react";
 import { Chessboard, ChessboardHandle } from "./Chessboard.tsx";
-import { ArrowLeftCircleIcon, ArrowRightCircleIcon } from "@heroicons/react/24/solid";
+import {
+    ChevronDoubleLeftIcon,
+    ChevronDoubleRightIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+} from "@heroicons/react/24/solid";
 import { Disclosure } from "@headlessui/react";
 
 interface Props {
@@ -23,6 +28,12 @@ const SearchResult: React.FC<Props> = ({ game }) => {
             setPositionIndex(positionIndex + 1);
         }
     };
+    const firstPosition = () => {
+        setPositionIndex(0);
+    };
+    const lastPosition = () => {
+        setPositionIndex(game.positions.length - 1);
+    };
     return (
         <div className="bg-white shadow rounded p-2 flex flex-col gap-3">
             <div className="flex gap-3">
@@ -34,12 +45,15 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                         ref={board}
                     />
                     <div className="flex items-center justify-evenly">
+                        <button onClick={firstPosition} className="hover:text-gray-800 disabled:text-gray-500 z-0">
+                            <ChevronDoubleLeftIcon width={16} />
+                        </button>
                         <button
                             disabled={!prevPositionAvailable}
                             onClick={prevPosition}
                             className="hover:text-gray-800 disabled:text-gray-500 z-0"
                         >
-                            <ArrowLeftCircleIcon width={16} />
+                            <ChevronLeftIcon width={16} />
                         </button>
                         <p className="text-xs text-gray-500">
                             {positionIndex + 1}/{game.positions.length}
@@ -49,7 +63,10 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                             onClick={nextPosition}
                             className="hover:text-gray-800 disabled:text-gray-500 z-0"
                         >
-                            <ArrowRightCircleIcon width={16} />
+                            <ChevronRightIcon width={16} />
+                        </button>
+                        <button onClick={lastPosition} className="hover:text-gray-800 disabled:text-gray-500 z-0">
+                            <ChevronDoubleRightIcon width={16} />
                         </button>
                     </div>
                 </div>
