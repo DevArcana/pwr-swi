@@ -1,7 +1,9 @@
 FROM node:16-alpine AS build
 WORKDIR /usr/src/app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install
+RUN corepack enable
+RUN corepack prepare pnpm@latest-8 --activate
+RUN pnpm install
 COPY . .
 RUN npm run build
 
