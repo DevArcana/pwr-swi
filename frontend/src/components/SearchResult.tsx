@@ -33,7 +33,7 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                         position={game.positions[positionIndex]}
                         ref={board}
                     />
-                    <div className="flex justify-evenly">
+                    <div className="flex items-center justify-evenly">
                         <button
                             disabled={!prevPositionAvailable}
                             onClick={prevPosition}
@@ -41,6 +41,9 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                         >
                             <ArrowLeftCircleIcon width={16} />
                         </button>
+                        <p className="text-xs text-gray-500">
+                            {positionIndex + 1}/{game.positions.length}
+                        </p>
                         <button
                             disabled={!nextPositionAvailable}
                             onClick={nextPosition}
@@ -59,7 +62,6 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                     <hr className="h-px bg-gray-300 my-2 border-0" />
                     <p className="text-sm">Opening: {game.opening}</p>
                     <p className="text-sm">Termination: {game.termination}</p>
-                    {/*<p className="text-xs text-gray-500">{game.mainline_moves}</p>*/}
                 </a>
             </div>
             <Disclosure>
