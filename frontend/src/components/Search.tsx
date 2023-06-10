@@ -31,21 +31,6 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                 autoComplete="off"
             />
             <SearchBoard />
-            {/*<Dialog.Root>*/}
-            {/*    <Dialog.Trigger asChild>*/}
-            {/*        <button className="flex justify-center items-center p-1 hover:text-gray-700">*/}
-            {/*            <Squares2X2Icon width={16} />*/}
-            {/*        </button>*/}
-            {/*    </Dialog.Trigger>*/}
-            {/*    <Dialog.Portal>*/}
-            {/*        <Dialog.Overlay className="bg-black opacity-30 fixed inset-0" />*/}
-            {/*        <Dialog.Content className="bg-white rounded p-3 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">*/}
-            {/*            <div>*/}
-
-            {/*            </div>*/}
-            {/*        </Dialog.Content>*/}
-            {/*    </Dialog.Portal>*/}
-            {/*</Dialog.Root>*/}
         </form>
     );
 };

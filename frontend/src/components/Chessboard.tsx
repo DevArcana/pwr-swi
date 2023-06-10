@@ -44,7 +44,7 @@ export const Chessboard = forwardRef<ChessboardHandle, Props>((props, ref) => {
     return (
         <chess-board
             ref={ref}
-            className={props.className}
+            class={props.className}
             spare-pieces={props.sparePieces}
             draggable-pieces={props.draggablePieces}
             hide-notation={props.hideNotation}

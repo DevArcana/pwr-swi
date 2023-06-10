@@ -30,7 +30,7 @@ const ResultsPage = () => {
                     <h1 className="text-2xl mr-6">Search</h1>
                     <Search query={query} setQuery={setQuery} onSearch={onSearch} />
                 </header>
-                <main className="bg-red-400 flex flex-col gap-3 p-3">
+                <main className="flex flex-col gap-3 p-3">
                     {results && results.hits.map((game) => <SearchResult key={game.link} game={game} />)}
                 </main>
                 <aside className="">{JSON.stringify(stats)}</aside>
