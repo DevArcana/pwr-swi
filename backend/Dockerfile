@@ -1,18 +1,20 @@
-FROM amazoncorretto:19 as build
-WORKDIR /workspace/app
+FROM amazoncorretto:20 as build
+WORKDIR /app
 
-RUN yum -y install gzip
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY lib lib
 
-RUN if [ "$(uname -m)" = "aarch64" ]; then url="https://github.com/VirtusLab/coursier-m1/releases/latest/download/cs-aarch64-pc-linux.gz"; else url="https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz"; fi && curl -fL $url | gzip -d > cs && chmod +x cs && ./cs setup --yes
+RUN chmod +x ./mvnw
+RUN ./mvnw verify --fail-never
 
-COPY project/plugins.sbt project/plugins.sbt
-COPY build.sbt build.sbt
 COPY src src
+RUN ./mvnw install -DskipTests
 
-RUN ~/.local/share/coursier/bin/sbt assembly
-RUN mv target/scala*/app.jar app.jar
+FROM amazoncorretto:20
+RUN mkdir -p /opt/app
+COPY --from=build /app/target/*.jar /opt/app/backend.jar
+COPY lib lib
 
-FROM  amazoncorretto:19
-VOLUME /tmp
-COPY --from=build /workspace/app/app.jar /app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-jar", "/opt/app/backend.jar"]
