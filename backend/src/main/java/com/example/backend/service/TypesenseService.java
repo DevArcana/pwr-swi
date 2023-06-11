@@ -11,13 +11,17 @@ import org.springframework.stereotype.Service;
 import org.typesense.api.Client;
 import org.typesense.api.Configuration;
 import org.typesense.model.SearchParameters;
+import org.typesense.model.SearchResultHit;
 import org.typesense.resources.Node;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class TypesenseService {
@@ -56,6 +60,37 @@ public class TypesenseService {
                 .stream()
                 .map(document -> objectMapper.convertValue(document.getDocument(), Game.class));
         return new TypesenseResponse(count, page, pages, games.toList());
+    }
+
+    public List<String> searchOpenings(String q) throws Exception {
+        val searchParameters = new SearchParameters()
+                .q(q)
+                .queryBy("opening")
+                .includeFields("opening")
+                .prioritizeTokenPosition(true)
+                .perPage(250);
+        val response = client.collections("chess").documents().search(searchParameters);
+        return response
+                .getHits()
+                .stream()
+                .filter(distinctByField(hit -> hit.getDocument().get("opening")))
+                .sorted(Comparator.comparing(document -> document.getDocument().get("opening").toString()))
+                .sorted(sortOpenings)
+                .map(hit -> (String) hit.getDocument().get("opening"))
+                .toList();
+    }
+
+    private final Comparator<SearchResultHit> sortOpenings =
+        Comparator.comparingInt((SearchResultHit hit) -> {
+            val highlights = hit.getHighlights().stream().map(searchHighlight -> searchHighlight.getSnippet() == null ? "" : searchHighlight.getSnippet());
+            val positions = highlights.map(searchHighlight -> searchHighlight.indexOf("<mark>")).map(index -> index == -1 ? Integer.MAX_VALUE : index);
+            val minPosition = positions.min(Integer::compare);
+            return minPosition.orElse(Integer.MAX_VALUE);
+        });
+
+    private static <T> Predicate<T> distinctByField(Function<? super T, ?> fieldExtractor) {
+        Set<String> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add((String) fieldExtractor.apply(t));
     }
 
     public Pair<String, String> parseQuery(String q) {
