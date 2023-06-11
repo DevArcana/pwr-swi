@@ -16,7 +16,7 @@ interface Props {
 const SearchResult: React.FC<Props> = ({ game }) => {
     const board = useRef<ChessboardHandle>(null);
     const [positionIndex, setPositionIndex] = useState(game.positions.length - 1);
-    const prevPositionAvailable = positionIndex - 1 > 0;
+    const prevPositionAvailable = positionIndex - 1 >= 0;
     const nextPositionAvailable = positionIndex + 1 < game.positions.length;
     const prevPosition = () => {
         if (prevPositionAvailable) {
