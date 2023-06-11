@@ -58,7 +58,6 @@ public class TypesenseService {
     }
 
     public TypesenseResponse search(String q, int page, int perPage) throws Exception {
-//        throw new MalformedQueryException();
         val query = parseQuery(q);
         val searchParameters = new SearchParameters()
                 .q(query.getLeft())
@@ -75,6 +74,22 @@ public class TypesenseService {
                     .stream()
                     .map(document -> objectMapper.convertValue(document.getDocument(), Game.class));
             return new TypesenseResponse(count, page, pages, games.toList());
+        } catch (RequestMalformed ex) {
+            throw new MalformedQueryException();
+        }
+    }
+    public List<SearchResultHit> searchStatistics(String q, int page, int perPage) throws Exception {
+        val query = parseQuery(q);
+        val searchParameters = new SearchParameters()
+                .q(query.getLeft())
+                .queryBy("opening, mainlineMoves, positions")
+                .filterBy(query.getRight())
+                .includeFields("mainlineMoves, result")
+                .page(page)
+                .perPage(perPage);
+        try {
+            val response = client.collections("chess").documents().search(searchParameters);
+            return response.getHits();
         } catch (RequestMalformed ex) {
             throw new MalformedQueryException();
         }
