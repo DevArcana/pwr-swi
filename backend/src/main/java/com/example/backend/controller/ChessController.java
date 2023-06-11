@@ -4,6 +4,7 @@ import com.example.backend.dto.SearchResponse;
 import com.example.backend.dto.StatsResponse;
 import com.example.backend.service.StatisticsService;
 import com.example.backend.service.TypesenseService;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +47,7 @@ public class ChessController {
 
     @GetMapping("/stats")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved", content = @Content(schema = @Schema(allOf = StatsResponse.class, nullable = true))),
             @ApiResponse(responseCode = "422", description = "Unprocessable content - malformed query", content = @Content(schema = @Schema()))
     })
     public StatsResponse getStats(@RequestParam("q") String query) throws Exception {

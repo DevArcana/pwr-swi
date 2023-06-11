@@ -27,6 +27,13 @@ public class StatisticsService {
     public StatsResponse calcStatistics(String q) throws Exception {
         val regex = Pattern.compile("[A-Za-z]+\\S+");
         val typesenseHits = typesenseService.searchStatistics(q, 1, 250);
+        val results = typesenseHits
+                .parallelStream()
+                .map(hit -> (String) hit.getDocument().get("result"))
+                .toList();
+        if (results.isEmpty())
+            return null;
+        val coefficient = 1.0 / results.size();
         val highlits =
                 typesenseHits
                         .stream()
@@ -41,11 +48,6 @@ public class StatisticsService {
                         return Pair.of(matcher.group(), highlight.getRight());
                     return null;})
                 .filter(Objects::nonNull);
-        val results = typesenseHits
-                .parallelStream()
-                .map(hit -> (String) hit.getDocument().get("result"))
-                .toList();
-        val coefficient = 1.0 / results.size();
         val stat = new Stat();
         stat.setWhiteWin(results.parallelStream().filter(res -> res.equals("1-0")).count()*coefficient);
         stat.setBlackWin(results.parallelStream().filter(res -> res.equals("0-1")).count()*coefficient);

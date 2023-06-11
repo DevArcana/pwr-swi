@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.typesense.api.Client;
 import org.typesense.api.Configuration;
+import org.typesense.api.exceptions.ObjectNotFound;
 import org.typesense.api.exceptions.RequestMalformed;
 import org.typesense.model.SearchParameters;
 import org.typesense.model.SearchResultHit;
@@ -74,7 +75,7 @@ public class TypesenseService {
                     .stream()
                     .map(document -> objectMapper.convertValue(document.getDocument(), Game.class));
             return new TypesenseResponse(count, page, pages, games.toList());
-        } catch (RequestMalformed ex) {
+        } catch (RequestMalformed | ObjectNotFound ex) {
             throw new MalformedQueryException();
         }
     }
@@ -90,7 +91,7 @@ public class TypesenseService {
         try {
             val response = client.collections("chess").documents().search(searchParameters);
             return response.getHits();
-        } catch (RequestMalformed ex) {
+        } catch (RequestMalformed | ObjectNotFound ex) {
             throw new MalformedQueryException();
         }
     }
@@ -113,7 +114,7 @@ public class TypesenseService {
                     .sorted(sortOpenings)
                     .map(hit -> (String) hit.getDocument().get("opening"))
                     .toList();
-        } catch (RequestMalformed ex) {
+        } catch (RequestMalformed | ObjectNotFound ex) {
             throw new MalformedQueryException();
         }
     }
