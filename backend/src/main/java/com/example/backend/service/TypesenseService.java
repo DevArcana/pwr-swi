@@ -79,6 +79,7 @@ public class TypesenseService {
             throw new MalformedQueryException();
         }
     }
+
     public List<SearchResultHit> searchStatistics(String q, int page, int perPage) throws Exception {
         val query = parseQuery(q);
         val searchParameters = new SearchParameters()
@@ -120,27 +121,25 @@ public class TypesenseService {
     }
 
     public Pair<String, String> parseQuery(String q) {
-        val splitted = Arrays.stream(q.split("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)")).filter(token -> token.trim().length()>0).toList();
+        val splitted = Arrays.stream(q.split("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)")).filter(token -> token.trim().length() > 0).toList();
         val filters = new StringBuilder();
         val freeTokens = new StringBuilder();
         var operator = "";
-        for (var el : splitted){
+        for (var el : splitted) {
             if (el.equals("NOT")) {
-                operator=("NOT");
-            }
-            else if (el.contains(":")) {
+                operator = ("NOT");
+            } else if (el.contains(":")) {
                 if (!filters.isEmpty())
                     filters.append(" && ");
-                if (operator.equals("NOT")){
+                if (operator.equals("NOT")) {
                     el = el.replace(":", ":!=");
                     operator = "";
                 }
                 filters.append(el);
-            }
-            else {
+            } else {
                 if (!freeTokens.isEmpty())
                     freeTokens.append(" ");
-                if (operator.equals("NOT")){
+                if (operator.equals("NOT")) {
                     el = "-" + el;
                     operator = "";
                 }

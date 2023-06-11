@@ -8,12 +8,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 public class StatisticsService {
@@ -58,6 +56,7 @@ public class StatisticsService {
             if (!nextMovesDictionary.containsKey(move))
                 nextMovesDictionary.put(move, new MoveStat(){{setMove(move);}});
             val entry = nextMovesDictionary.get(move);
+            entry.setPopularity(entry.getPopularity() + coefficient);
             switch (moveOccurrence.getRight()) {
                 case "1-0" -> entry.setWhiteWin(entry.getWhiteWin() + 1);
                 case "0-1" -> entry.setBlackWin(entry.getBlackWin() + 1);
@@ -71,7 +70,13 @@ public class StatisticsService {
             move.setWhiteWin(move.getWhiteWin() * moveCoefficient);
             move.setBlackWin(move.getBlackWin() * moveCoefficient);
         }
-        val nextMoves = nextMovesDictionary.values().stream().filter(Objects::nonNull).toList();
+        val nextMoves = nextMovesDictionary
+                .values()
+                .stream()
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparingDouble(move -> -move.getPopularity()))
+                .limit(7)
+                .toList();
         return new StatsResponse(stat, nextMoves);
     }
 }
