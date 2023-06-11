@@ -8,6 +8,7 @@ services:
     volumes:
       - ./typesense-data:/data
     command: '--data-dir /data --api-key=xyz --enable-cors'
+
   backend:
     image: swi-backend
     build:
@@ -21,6 +22,7 @@ services:
       - typesense
     ports:
       - "8080:8080"
+
   frontend:
     image: swi-frontend
     build:
@@ -30,5 +32,7 @@ services:
       - TZ=Europe/Warsaw
     ports:
       - "80:80"
+    depends_on:
+      - backend
     
     
