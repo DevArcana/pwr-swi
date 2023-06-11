@@ -17,6 +17,8 @@ services:
       - TZ=Europe/Warsaw
     depends_on:
       - typesense
+    ports:
+      - "8080:8080"
   frontend:
     image: swi-frontend
     build:
