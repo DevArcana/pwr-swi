@@ -1,4 +1,4 @@
-interface Stats {
+export interface Stats {
     white_win: number;
     black_win: number;
     draw: number;

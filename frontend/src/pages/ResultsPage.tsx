@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchResult from "../components/SearchResult.tsx";
 import useGamesApi from "../hooks/useGamesApi.ts";
+import StatsBar from "../components/StatsBar.tsx";
 
 const ResultsPage = () => {
     const [params, setParams] = useSearchParams();
@@ -33,7 +34,13 @@ const ResultsPage = () => {
                 <main className="flex flex-col gap-3 p-3">
                     {results && results.hits.map((game) => <SearchResult key={game.link} game={game} />)}
                 </main>
-                <aside className="">{JSON.stringify(stats)}</aside>
+                <aside className="flex-col justify-center p-3 gap-3 mx-7">
+                    {stats && <StatsBar heading={"Results overall"} stats={stats.overall} />}
+                    {stats &&
+                        stats.moves.map((move) => (
+                            <StatsBar heading={`${move.move} (${Math.round(move.popularity * 100)}%)`} stats={move} />
+                        ))}
+                </aside>
             </div>
         </>
     );
