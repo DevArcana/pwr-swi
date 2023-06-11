@@ -8,14 +8,16 @@ const useGamesApi = () => {
 
     const search = (query: string) => {
         fetch(`/api/games?q=${query}`)
-            .then((x) => x.json())
+            .then((x) => x.ok && x.json())
             .then((x) => x as SearchResultsResponse)
-            .then((x) => setResults(x));
+            .then((x) => setResults(x))
+            .catch(() => setResults(null));
 
         fetch(`/api/stats?q=${query}`)
-            .then((x) => x.json())
+            .then((x) => x.ok && x.json())
             .then((x) => x as StatsResponse)
-            .then((x) => setStats(x));
+            .then((x) => setStats(x))
+            .catch(() => setStats(null));
     };
 
     return { results, stats, search };

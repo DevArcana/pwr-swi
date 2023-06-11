@@ -71,10 +71,13 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                     </div>
                 </div>
                 <a className="bg-gray-200 shadow-md rounded hover:bg-gray-300 p-3 flex-auto" href={game.link}>
-                    <h1 className="text-xs text-gray-500">#{game.link.split("/")[3]}</h1>
+                    <h1 className="text-xs text-gray-500 flex justify-between">
+                        <span>#{game.link.split("/")[3]}</span>
+                        <span>avg elo: {Math.round((game.white_elo + game.black_elo) / 2)}</span>
+                    </h1>
                     <h2 className="text-sm">{game.event}</h2>
                     <h3>
-                        {game.white} (white) vs {game.black} (black)
+                        {game.white} (white) {game.result} {game.black} (black)
                     </h3>
                     <hr className="h-px bg-gray-300 my-2 border-0" />
                     <p className="text-sm">Opening: {game.opening}</p>

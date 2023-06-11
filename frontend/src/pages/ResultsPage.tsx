@@ -32,7 +32,17 @@ const ResultsPage = () => {
                     <Search query={query} setQuery={setQuery} onSearch={onSearch} />
                 </header>
                 <main className="flex flex-col gap-3 p-3">
-                    {results && results.hits.map((game) => <SearchResult key={game.link} game={game} />)}
+                    {results && (
+                        <>
+                            <span>
+                                Found {results.count} matching results, showing top {results.hits.length}
+                            </span>
+                            {results.hits.map((game) => (
+                                <SearchResult key={game.link} game={game} />
+                            ))}
+                        </>
+                    )}
+                    {!results && <div>No results :(</div>}
                 </main>
                 <aside className="flex-col justify-center p-3 gap-3 mx-7">
                     {stats && <StatsBar heading={"Results overall"} stats={stats.overall} />}
