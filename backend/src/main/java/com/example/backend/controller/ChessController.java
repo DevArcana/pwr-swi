@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class ChessController {
     private final TypesenseService typesenseService;
@@ -32,6 +34,14 @@ public class ChessController {
     })
     public SearchResponse searchForGames(@RequestParam("q") String query, @RequestParam(defaultValue = "1") int page) throws Exception {
         return new SearchResponse(typesenseService.search(query, page));
+    }
+
+    @GetMapping("/openings")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved")
+    })
+    public List<String> searchForOpenings(@RequestParam("q") String query) throws Exception {
+        return typesenseService.searchOpenings(query);
     }
 
     @GetMapping("/stats")
