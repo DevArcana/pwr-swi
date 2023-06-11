@@ -4,7 +4,6 @@ WORKDIR /app
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-COPY lib lib
 
 RUN chmod +x ./mvnw
 RUN ./mvnw verify --fail-never
@@ -15,6 +14,5 @@ RUN ./mvnw install -DskipTests
 FROM amazoncorretto:20
 RUN mkdir -p /opt/app
 COPY --from=build /app/target/*.jar /opt/app/backend.jar
-COPY lib lib
 
 ENTRYPOINT ["java","-jar", "/opt/app/backend.jar"]
