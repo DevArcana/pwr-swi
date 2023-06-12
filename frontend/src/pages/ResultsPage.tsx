@@ -48,7 +48,11 @@ const ResultsPage = () => {
                     {stats && <StatsBar heading={"Results overall"} stats={stats.overall} />}
                     {stats &&
                         stats.moves.map((move) => (
-                            <StatsBar heading={`${move.move} (${Math.round(move.popularity * 100)}%)`} stats={move} />
+                            <StatsBar
+                                key={move.move}
+                                heading={`${move.move} (${Math.round(move.popularity * 100)}%)`}
+                                stats={move}
+                            />
                         ))}
                 </aside>
             </div>
