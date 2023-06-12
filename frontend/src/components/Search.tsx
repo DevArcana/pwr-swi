@@ -10,7 +10,10 @@ interface Props {
     onSearch: (query: string) => void;
 }
 
+const fengex = /(((?:[rnbqkpRNBQKP1-8]+\/){7})[rnbqkpRNBQKP1-8]+)/;
+
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
+
     const { openings, getOpenings } = useOpeningsApi();
 
     const filteredOpenings =
@@ -20,6 +23,21 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                   ?.filter((opening) => {
                       return opening.toLowerCase().includes(query.toLowerCase());
                   }) || [];
+
+    const handleSearch = (fen: string) => {
+        let q = query;
+
+        if (q.match(fengex)) {
+            q = q.replace(fengex, fen);
+        } else {
+            q = `${q} ${fen}`;
+        }
+
+        setQuery(q);
+        onSearch(q);
+    };
+
+    const currentFen = (query.match(fengex) ?? [undefined])[0];
 
     return (
         <form
@@ -67,7 +85,7 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                     </Transition>
                 </div>
             </Combobox>
-            <SearchBoard />
+            <SearchBoard fen={currentFen} onSearch={handleSearch}/>
         </form>
     );
 };
