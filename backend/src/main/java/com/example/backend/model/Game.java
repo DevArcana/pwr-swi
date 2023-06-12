@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"id"})
+@JsonIgnoreProperties(value = {"id", "avgElo", "player"})
 public class Game {
     private String black;
     private int blackElo;
