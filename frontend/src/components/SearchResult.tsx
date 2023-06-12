@@ -6,14 +6,16 @@ import {
     ChevronDoubleRightIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
+    MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { Disclosure } from "@headlessui/react";
 
 interface Props {
     game: ChessGameResponse;
+    onSearch: (fen: string) => void;
 }
 
-const SearchResult: React.FC<Props> = ({ game }) => {
+const SearchResult: React.FC<Props> = ({ game, onSearch }) => {
     const board = useRef<ChessboardHandle>(null);
     const [positionIndex, setPositionIndex] = useState(game.positions.length - 1);
     const prevPositionAvailable = positionIndex - 1 >= 0;
@@ -33,6 +35,12 @@ const SearchResult: React.FC<Props> = ({ game }) => {
     };
     const lastPosition = () => {
         setPositionIndex(game.positions.length - 1);
+    };
+    const searchCurrentBoard = () => {
+        const fen = board.current?.fen();
+        if (fen) {
+            onSearch(fen);
+        }
     };
     return (
         <div className="bg-white shadow rounded p-2 flex flex-col gap-3">
@@ -67,6 +75,9 @@ const SearchResult: React.FC<Props> = ({ game }) => {
                         </button>
                         <button onClick={lastPosition} className="hover:text-gray-800 disabled:text-gray-500 z-0">
                             <ChevronDoubleRightIcon width={16} />
+                        </button>
+                        <button onClick={searchCurrentBoard} className="hover:text-gray-800 disabled:text-gray-500 z-0">
+                            <MagnifyingGlassIcon width={16} />
                         </button>
                     </div>
                 </div>

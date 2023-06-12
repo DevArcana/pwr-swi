@@ -8,7 +8,24 @@ interface Props {
     onSearch: (query: string) => void;
 }
 
+const fengex = /(((?:[rnbqkpRNBQKP1-8]+\/){7})[rnbqkpRNBQKP1-8]+)/;
+
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
+    const handleSearch = (fen: string) => {
+        let q = query;
+
+        if (q.match(fengex)) {
+            q = q.replace(fengex, fen);
+        } else {
+            q = `${q} ${fen}`;
+        }
+
+        setQuery(q);
+        onSearch(q);
+    };
+
+    const currentFen = (query.match(fengex) ?? [undefined])[0];
+
     return (
         <form
             className="relative w-96 bg-white rounded p-2 flex items-center"
@@ -30,7 +47,7 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                 placeholder="e4 e5"
                 autoComplete="off"
             />
-            <SearchBoard />
+            <SearchBoard fen={currentFen} onSearch={handleSearch} />
         </form>
     );
 };
