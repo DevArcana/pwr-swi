@@ -59,12 +59,14 @@ class Typesense(url: URL, apiKey: String) extends Engine {
     def close(): Unit = {}
 
     createIndex("chess", Map(
+        "avgElo" -> "int32",
         "black" -> "string",
         "blackElo" -> "int32",
         "event" -> "string",
         "link" -> "string",
         "mainlineMoves" -> "string",
         "opening" -> "string",
+        "player" -> "string[]",
         "positions" -> "string[]",
         "result" -> "string",
         "termination" -> "string",
