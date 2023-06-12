@@ -38,7 +38,7 @@ const ResultsPage = () => {
                                 Found {results.count} matching results, showing top {results.hits.length}
                             </span>
                             {results.hits.map((game) => (
-                                <SearchResult key={game.link} game={game} />
+                                <SearchResult key={game.link} game={game} onSearch={onSearch} />
                             ))}
                         </>
                     )}
