@@ -22,7 +22,7 @@ case class GameData(game: Game) {
     @BeanProperty val blackElo: Int = game.getBlackPlayer.getElo
     @BeanProperty val moves: String = game.getCurrentMoveList.toSanWithMoveNumbers
     @BeanProperty val result: String = game.getResult.getDescription
-    @BeanProperty val opening: String = game.getOpening
+    @BeanProperty val opening: String = game.getOpening.replace(":", "-")
     @BeanProperty val event: String = game.getRound.getEvent.getName
     @BeanProperty val termination: String = game.getTermination.value()
 
