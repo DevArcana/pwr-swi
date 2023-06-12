@@ -7,10 +7,9 @@ import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.typesense.model.SearchResultHit;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -24,7 +23,14 @@ public class StatisticsService {
 
     public StatsResponse calcStatistics(String q) throws Exception {
         val regex = Pattern.compile("[A-Za-z]+\\S+");
-        val typesenseHits = typesenseService.searchStatistics(q, 1, 250);
+        List<SearchResultHit> typesenseHits = new ArrayList<>();
+        for(int i = 1; i <= 10 ; i++) {
+            val page = typesenseService.searchStatistics(q, i, 250);
+            typesenseHits.addAll(page);
+            if (page.size() < 250)
+                break;
+        }
+
         val results = typesenseHits
                 .parallelStream()
                 .map(hit -> (String) hit.getDocument().get("result"))
