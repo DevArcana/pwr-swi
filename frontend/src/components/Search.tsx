@@ -13,16 +13,14 @@ interface Props {
 const fengex = /(((?:[rnbqkpRNBQKP1-8]+\/){7})[rnbqkpRNBQKP1-8]+)/;
 
 const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
-
     const { openings, getOpenings } = useOpeningsApi();
 
     const filteredOpenings =
         query === ""
             ? []
-            : openings
-                  ?.filter((opening) => {
-                      return opening.toLowerCase().includes(query.toLowerCase());
-                  }) || [];
+            : openings?.filter((opening) => {
+                  return opening.toLowerCase().includes(query.toLowerCase());
+              }) || [];
 
     const handleSearch = (fen: string) => {
         let q = query;
@@ -75,7 +73,11 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                             {filteredOpenings.map((opening) => (
                                 <Combobox.Option key={opening} value={opening}>
                                     {({ active }) => (
-                                        <li className={`${active ? "bg-blue-500 text-white" : "bg-white text-black"} p-1`}>
+                                        <li
+                                            className={`${
+                                                active ? "bg-blue-500 text-white" : "bg-white text-black"
+                                            } p-1`}
+                                        >
                                             {opening}
                                         </li>
                                     )}
@@ -85,7 +87,7 @@ const Search: React.FC<Props> = ({ query, setQuery, onSearch }) => {
                     </Transition>
                 </div>
             </Combobox>
-            <SearchBoard fen={currentFen} onSearch={handleSearch}/>
+            <SearchBoard fen={currentFen} onSearch={handleSearch} />
         </form>
     );
 };

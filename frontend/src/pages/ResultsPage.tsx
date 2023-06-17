@@ -20,6 +20,7 @@ const ResultsPage = () => {
 
     const onSearch = (q: string) => {
         setParams({ q });
+        setQuery(q);
         search(q);
     };
 
