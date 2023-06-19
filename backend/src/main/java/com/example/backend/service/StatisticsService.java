@@ -5,12 +5,14 @@ import com.example.backend.model.MoveStat;
 import com.example.backend.model.Stat;
 import lombok.val;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.typesense.model.SearchResultHit;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @Service
 public class StatisticsService {
@@ -41,16 +43,40 @@ public class StatisticsService {
         val highlits =
                 typesenseHits
                         .stream()
-                        .map(hit -> Pair.of(hit.getHighlights().stream(), (String) hit.getDocument().get("result")))
-                        .flatMap(pair -> pair.getLeft().map(highlight -> Pair.of(highlight, pair.getRight())));
+                        .map(hit -> Triple.of(hit.getHighlights().stream(), hit.getDocument(),(String) hit.getDocument().get("result")))
+                        .flatMap(triple -> triple.getLeft().map(highlight -> Triple.of(highlight, triple.getMiddle(), triple.getRight())));
         val nextMovesOccurrences = highlits
-                .map(highlight -> {
-                    val snippet = highlight.getLeft().getSnippet();
-                    val snippetPostMark = snippet.substring(snippet.lastIndexOf("</mark>")+7).trim();
-                    val matcher = regex.matcher(snippetPostMark);
-                    if(matcher.find())
-                        return Pair.of(matcher.group(), highlight.getRight());
-                    return null;})
+                .flatMap(highlight -> {
+                    if (highlight.getLeft().getField().equals("mainlineMoves")) {
+                        val snippet = highlight.getLeft().getSnippet();
+                        val snippetPostMark = snippet.substring(snippet.lastIndexOf("</mark>") + 7).trim();
+                        val matcher = regex.matcher(snippetPostMark);
+                        if (matcher.find())
+                            return Stream.of(Pair.of(matcher.group(), highlight.getRight()));
+                        return null;
+                    } else if (highlight.getLeft().getField().equals("positions")) {
+                        val snippets = highlight
+                                .getLeft()
+                                .getSnippets()
+                                .stream()
+                                .filter(snippet -> snippet.split(" ")[0].contains("<mark>"))
+                                .map(snippet ->
+                                        snippet
+                                                .replaceAll("</mark>", "")
+                                                .replaceAll("<mark>", ""));
+                        return snippets.map(snippet -> {
+                            val temp = snippet.split(" ");
+                            val color = temp[1];
+                            val fullMoveNumber = Integer.parseInt(temp[temp.length - 1]);
+                            val movesStream = Arrays.stream(((String) highlight.getMiddle().get("mainlineMoves")).split(" "));
+                            val next = movesStream.skip(fullMoveNumber * 3L + (color.equals("w") ? -2 : -1)).findFirst().orElse(null);
+                            if (next == null) return null;
+                            return Pair.of(next, highlight.getRight());
+                        });
+                    }
+                    else
+                        return null;
+                })
                 .filter(Objects::nonNull);
         val stat = new Stat();
         stat.setWhiteWin(results.parallelStream().filter(res -> res.equals("1-0")).count()*coefficient);

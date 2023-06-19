@@ -86,7 +86,7 @@ public class TypesenseService {
                 .q(query.getLeft())
                 .queryBy("opening, mainlineMoves, positions")
                 .filterBy(query.getRight())
-                .includeFields("mainlineMoves, result")
+                .includeFields("mainlineMoves, positions, result")
                 .page(page)
                 .perPage(perPage);
         try {
